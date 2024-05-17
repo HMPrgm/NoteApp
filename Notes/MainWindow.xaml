@@ -1,0 +1,42 @@
+﻿<Window x:Class="Notes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notes"
+        mc:Ignorable="d"
+        Title="Notes" Height="450" Width="550">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="10"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Name="noteTitle" FontSize="30" FontWeight="SemiBold">
+                Title
+            </TextBox>
+            <TextBox Grid.Row="1" Name="noteBox" AcceptsReturn="True">
+                body
+            </TextBox>
+            <Button Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70" Height="30" 
+                    Name="submitBtn" Click="submitBtn_Click">
+                New Note
+            </Button>
+        </Grid>
+        <ListView Grid.Column="2" Grid.Row="1" Name="noteList" MouseDoubleClick="noteList_MouseDoubleClick">
+        </ListView>
+        
+    </Grid>
+</Window>
