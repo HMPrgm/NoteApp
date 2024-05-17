@@ -10,7 +10,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\icon_add.png" />
+    <None Remove="Icons\icon_delete.png" />
+    <None Remove="icon_close.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="folder_UVA.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\icon_add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\icon_close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\icon_delete.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

@@ -5,37 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notes"
         mc:Ignorable="d"
-        Title="Notes" Height="450" Width="550">
+        Title="Notes" Name="mainWindow"
+        Height="450" Width="550"
+        Closing="OnClose">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="10"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="10"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Column="1" Grid.Row="1">
+        <Grid Grid.Column="0" Grid.Row="0" Background="#2c3e50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25"></ColumnDefinition>
+                <ColumnDefinition Width="25"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="25"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Click="DeleteCurrentNote" Name="deleteBtn" 
+                    Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="/Icons/icon_delete.png" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                       Width="20" Height="20"></Image>
+            </Button>
+            <Button Grid.Column="1" Click="AddNewNote" Name="addBtn" 
+                    Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="/Icons/icon_add.png" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                    Width="20" Height="20"></Image>
+            </Button>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="0" Background="#2c3e50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="25"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="2" Click="CloseApp" Name="closeBtn" 
+                    Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="/Icons/icon_close.png" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
+            </Button>
+        </Grid>
+        
+        <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="5*"></RowDefinition>
-                <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" Name="noteTitle" FontSize="30" FontWeight="SemiBold">
+            <TextBox Grid.Row="0" Name="noteTitle" FontSize="30" 
+                     FontWeight="SemiBold" TextChanged="NoteChanged" VerticalAlignment="Center" 
+                     BorderBrush="{x:Null}" Padding="10">
                 Title
             </TextBox>
-            <TextBox Grid.Row="1" Name="noteBox" AcceptsReturn="True">
+            <TextBox Grid.Row="1" Name="noteBox" AcceptsReturn="True" TextChanged="NoteChanged" Padding="5">
                 body
             </TextBox>
-            <Button Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="70" Height="30" 
-                    Name="submitBtn" Click="submitBtn_Click">
-                New Note
-            </Button>
         </Grid>
-        <ListView Grid.Column="2" Grid.Row="1" Name="noteList" MouseDoubleClick="noteList_MouseDoubleClick">
+        <ListView Grid.Column="1" Grid.Row="1" Name="noteList" MouseDoubleClick="noteList_MouseDoubleClick">
         </ListView>
         
     </Grid>
