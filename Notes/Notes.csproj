@@ -11,7 +11,9 @@
 
   <ItemGroup>
     <None Remove="Icons\icon_add.png" />
+    <None Remove="Icons\icon_collapse.png" />
     <None Remove="Icons\icon_delete.png" />
+    <None Remove="Icons\icon_menu.png" />
     <None Remove="icon_close.png" />
   </ItemGroup>
 
@@ -26,7 +28,13 @@
     <Resource Include="Icons\icon_close.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Icons\icon_collapse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Icons\icon_delete.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\icon_menu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

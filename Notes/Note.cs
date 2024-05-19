@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Windows;
+using System.Windows.Controls;
 
 namespace Notes
 {
@@ -11,6 +9,8 @@ namespace Notes
         private string text;
         private string title;
         private int id;
+        private TextBlock textBlock;
+
         private static int CURR_ID = 1;
 
         public Note(string text, string title)
@@ -39,6 +39,18 @@ namespace Notes
         public void setTitle(string title)
         {
             this.title = title;
+        }
+        public void setTextBlock(TextBlock textBlock) 
+        {
+            this.textBlock = textBlock;
+        }
+        public void setTextBlockText(string text)
+        {
+            this.textBlock.Text = text;
+        }
+        public bool hasTextBlock()
+        {
+            return this.textBlock != null;
         }
 
         public int getId()

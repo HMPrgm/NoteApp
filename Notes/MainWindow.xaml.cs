@@ -20,17 +20,20 @@ namespace Notes
     {
         private int score = 0;
         private Note curNote;
+        private bool collapsed = true;
         
         public MainWindow()
         {
             InitializeComponent();
             Note.InitializeNotes();
             RefreshApp();
+            Collapse();
         }
 
         private void RefreshApp(Note? note = null)
         {
             if (note == null) { note = Note.GetFirst(); }
+            if (note == null) { AddNewNote(); }
             RefreshNoteList();
             UpdateCurrentNote(note);
         }
@@ -68,6 +71,7 @@ namespace Notes
                 TextBlock text = new TextBlock();
                 text.Text = note.getTitle() == "" ? "Untitled Note" : note.getTitle();
                 text.Name = "Note_" + note.getId().ToString();
+                note.setTextBlock(text);
                 text.Tag = note.getId();
                 noteList.Items.Add(text);
             }
@@ -94,8 +98,12 @@ namespace Notes
 
         private void NoteChanged(object sender, TextChangedEventArgs e)
         {
-            mainWindow.Title = noteTitle.Text.Length > 0 ? noteTitle.Text : "Untitled Note";
-            
+            string display = noteTitle.Text.Length > 0 ? noteTitle.Text : "Untitled Note";
+            mainWindow.Title = display;
+            if (curNote != null && curNote.hasTextBlock())
+            { 
+                curNote.setTextBlockText(display); 
+            }
         }
 
         private void AddNewNote(object sender, RoutedEventArgs e) 
@@ -116,13 +124,30 @@ namespace Notes
             { 
                 Note.Remove(curNote); 
             }
-            if (Note.GetFirst() == null)
-            {
-                AddNewNote();
-            }
+            
             RefreshApp();
         }
 
+
         
+        private void Collapse(object sender, RoutedEventArgs e) { Collapse(); }
+        private void Collapse()
+        {
+            sideBar.Width = new GridLength(0);
+            mainWindow.Width = (mainWindow.Width * 3) / 4;
+            collapseBtn.Visibility = Visibility.Collapsed;
+            menuBtn.Visibility = Visibility.Visible;
+            collapsed = true;
+        }
+
+        private void Expand(object sender, RoutedEventArgs e) {  Expand(); }
+        private void Expand()
+        {
+            sideBar.Width = new GridLength(mainWindow.Width / 3);
+            mainWindow.Width = (mainWindow.Width * 4) / 3;
+            collapseBtn.Visibility = Visibility.Visible;
+            menuBtn.Visibility = Visibility.Collapsed;
+            collapsed = false;  
+        }
     }
 }
