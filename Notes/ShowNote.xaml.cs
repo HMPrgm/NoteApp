@@ -41,8 +41,8 @@ namespace Notes
 
         private void DisplayNote()
         {
-            title.Text = note.getTitle();
-            body.Text = note.getText();
+            title.Text = note.title;
+            body.Text = note.text;
         }
 
         private void closeBtn_Click(object sender, RoutedEventArgs e)

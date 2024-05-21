@@ -1,15 +1,15 @@
 ﻿using System.IO;
-using System.Linq;
+using System.Text.Json;
 using System.Windows.Controls;
 
 namespace Notes
 {
     public class Note
     {
-        private string text;
-        private string title;
-        private int id;
-        private TextBlock textBlock;
+        public string text { get; set; }
+        public string title { get; set; }
+        public int id { get; }
+        public TextBlock textBlock { get; set; }
 
         private static int CURR_ID = 1;
 
@@ -23,81 +23,90 @@ namespace Notes
         }
 
         #region Accessors/Mutators
-        public string getText()
-        {
-            return text;
-        }
-        public void setText(string text)
-        {
-            this.text = text;
-        }
+        
 
-        public string getTitle()
+       
+        public string ToFile()
         {
-            return title;
+            return $"{this.title}\n{this.text}";
         }
-        public void setTitle(string title)
+        public override string ToString()
         {
-            this.title = title;
-        }
-        public void setTextBlock(TextBlock textBlock) 
-        {
-            this.textBlock = textBlock;
-        }
-        public void setTextBlockText(string text)
-        {
-            this.textBlock.Text = text;
-        }
-        public bool hasTextBlock()
-        {
-            return this.textBlock != null;
-        }
-
-        public int getId()
-        {
-            return id;
-        }
-        public string ToCSV()
-        {
-            return $"{this.id},{this.title},{this.text}";
+            return $"{this.id}: \n\tName:{title}\n\t{text}";
         }
         #endregion
         /********** NOTE STORAGE **********
-         * Notes are stored in a csv file "notes.csv"
-         * The csv order is [id,title,text]
-         * Ids are overridden each time
+         * Notes are stored in a json file
+         * The NoteStcut class helps convert data to and from json
          */
         private static List<Note> notes = new List<Note>();
-        private static string filename = "notes.csv";
-        private static int ITEMS_VALIDATION =3;
-        
+        private static string filePath = "notes.json";
+      
+        struct NoteStruct
+        {
+            public string title { get; set; }
+            public string text { get; set; }
+        }
+
         public static void InitializeNotes()
         {
-            try {
-                List<string> contents = File.ReadAllLines(filename).ToList();
-                foreach (string line in contents)
+            try
+            {
+                using (StreamReader r = new StreamReader(filePath))
                 {
-                    if (line.Count(f => f == ',') != ITEMS_VALIDATION - 1) { continue; }
-
-                    string[] lsplit = line.Split(",");
-                    notes.Add(new Note(lsplit[2], lsplit[1]));
+                    string json = r.ReadToEnd();
+                    notes = new List<Note>();
+                    List<NoteStruct>? noteStructs = JsonSerializer.Deserialize<List<NoteStruct>>(json);
+                    if (noteStructs == null) { return; }
+                    foreach (NoteStruct noteStruct in noteStructs)
+                    {
+                        notes.Add(new Note(title: noteStruct.title, text: noteStruct.text));
+                    } 
                 }
             }
             catch (FileNotFoundException)
             {
-                File.Create(filename);
+                File.Create(filePath);
+                notes = new List<Note>();
             }
+            //try
+            //{
+            //    string[] filenames = Directory.GetFiles(fileDirectory);
+            //    foreach (string filename in filenames)
+            //    {
+            //        if (!fileDirectory.EndsWith(fileExtenstion)) { continue; }
+            //        string contents = File.ReadAllText(filename);
+            //        string title = contents.Substring(0, contents.IndexOf("\n"));
+            //        string text = contents.Substring(contents.IndexOf("\n") + 1);
+            //        notes.Add(new Note(title: title, text: text));
+            //    }
+            //}
+            //catch (DirectoryNotFoundException)
+            //{
+            //    Directory.CreateDirectory(fileDirectory);
+            //}
         }
+        
         public static void SaveNotes()
         {
-            //"{note.id},{note.title},{note.text}";
-            string[] contents = new string[notes.Count()];
-            for (int i = 0; i < notes.Count(); i++)
-            {
-                contents[i] = notes[i].ToCSV();
-            }
-            File.WriteAllLines(filename, contents);
+            //Line 67 Describes process
 
+
+            List<NoteStruct> noteStruct = new List<NoteStruct>();
+            foreach (Note note in notes)
+            {
+                noteStruct.Add(new()
+                {
+                    text = note.text,
+                    title = note.title
+                });
+                
+            }
+            string jsonString = JsonSerializer.Serialize(noteStruct, new JsonSerializerOptions { WriteIndented = true });
+            using (StreamWriter outPut = new StreamWriter(filePath))
+            {
+                outPut.WriteLine(jsonString);
+            }
         }
         public static bool Remove(Note note)
         {

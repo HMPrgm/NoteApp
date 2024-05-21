@@ -28,6 +28,7 @@ namespace Notes
             Note.InitializeNotes();
             RefreshApp();
             Collapse();
+            
         }
 
         private void RefreshApp(Note? note = null)
@@ -69,10 +70,10 @@ namespace Notes
             foreach (Note note in Note.Get())
             {
                 TextBlock text = new TextBlock();
-                text.Text = note.getTitle() == "" ? "Untitled Note" : note.getTitle();
-                text.Name = "Note_" + note.getId().ToString();
-                note.setTextBlock(text);
-                text.Tag = note.getId();
+                text.Text = note.title == "" ? "Untitled Note" : note.title;
+                text.Name = "Note_" + note.id;
+                note.textBlock = text;
+                text.Tag = note.id;
                 noteList.Items.Add(text);
             }
         }
@@ -84,15 +85,15 @@ namespace Notes
             if (curNote != null) { SaveCurrentNote(); }
             //Sets New Note
             curNote = note;
-            noteTitle.Text = note.getTitle();
-            noteBox.Text = note.getText();
+            noteTitle.Text = note.title;
+            noteBox.Text = note.text;
         }
 
         private void SaveCurrentNote()
         {
             if (curNote == null) { return; }
-            curNote.setText(noteBox.Text);
-            curNote.setTitle(noteTitle.Text);
+            curNote.text = noteBox.Text;
+            curNote.title = noteTitle.Text;
             RefreshNoteList();
         }
 
@@ -100,9 +101,9 @@ namespace Notes
         {
             string display = noteTitle.Text.Length > 0 ? noteTitle.Text : "Untitled Note";
             mainWindow.Title = display;
-            if (curNote != null && curNote.hasTextBlock())
+            if (curNote != null && curNote.textBlock != null)
             { 
-                curNote.setTextBlockText(display); 
+                curNote.textBlock.Text = display; 
             }
         }
 
